@@ -1,7 +1,9 @@
-from django.http import HttpResponse
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from api.serializers.car_owner import CarOwnerSerializer
+from api.serializers.car_owner import (
+    CarOwnerSerializer,
+    CarOwnerOutputSerializer,
+)
 from api.domain.car_owner import CarOwnerDomain
 
 
@@ -16,3 +18,10 @@ class CarOwnerService(APIView):
             ret = self.domain.create(serializer.data)
         
         return Response({"message": ret["message"]}, status=ret["status"])
+    
+    def get(self, request):
+        ret = self.domain.list()
+
+        serializer = CarOwnerOutputSerializer(ret["message"], many=True)
+
+        return Response({"car_owners": serializer.data})

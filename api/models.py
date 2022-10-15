@@ -15,11 +15,11 @@ class CarOwner(models.Model):
 
 class Car(models.Model):
     cd_car = models.UUIDField(primary_key=True, default=uuid4, editable=False)
-    cd_car_owner = models.ForeignKey(
+    owner = models.ForeignKey(
         "CarOwner",
         verbose_name="Car Owner",
         related_name="car",
-        on_delete=models.DO_NOTHING
+        on_delete=models.CASCADE
     )
     color = models.CharField(
         "Color",
@@ -33,4 +33,4 @@ class Car(models.Model):
     )
 
     def __str__(self):
-        return self.cd_car_owner.name + " - " + self.color + " - " + self.model
+        return self.owner.name + " - " + self.color + " - " + self.model

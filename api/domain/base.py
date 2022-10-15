@@ -1,3 +1,6 @@
+from django.core.exceptions import ObjectDoesNotExist
+
+
 class DomainBase:
     def __init__(self, repository):
         self.repository = repository
@@ -10,3 +13,11 @@ class DomainBase:
             return {"message": False, "status": 400}
         
         return {"message": True, "status": 201}
+    
+    def list(self):
+        try:
+            ret = self.repository.list()
+        except ObjectDoesNotExist as e:
+            return {"message": "Objeto não encontrado", "status": 404}
+        
+        return {"message": ret, "status": 200}

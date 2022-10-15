@@ -1,7 +1,8 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from api.domain.car import CarDomain
-from api.serializers.car import CarSerializer
+from api.serializers.car import CarSerializer, CarOutputSerializer
+
 
 class CarService(APIView):
     domain = CarDomain()
@@ -13,3 +14,12 @@ class CarService(APIView):
             ret = self.domain.create(serializer.data)
         
         return Response({"message": ret["message"]}, status=ret["status"])
+    
+    def get(self, request):
+        ret = self.domain.list()
+
+        serializer = CarOutputSerializer(ret["message"], many=True)
+
+        return Response({"cars": serializer.data})
+
+

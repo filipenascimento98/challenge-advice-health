@@ -4,7 +4,7 @@ class RepositoryBase:
     
     def create(self, obj):
         '''
-        Realiza a inserção de um model na base de dados
+        Realiza a criação de um model
         Args:
         - obj: Dicionário com os campos do model
         Returns:
@@ -20,31 +20,49 @@ class RepositoryBase:
         '''
         obj.save()
     
-    def get(self, query_params={}, select_related=[]):
+    def get(self, query_params={}, select_related=[], prefetch_related=[]):
         '''
         Retorna um único objeto com base nos parâmetros definidos:
         Args:
-            - query_params: Dict com os valores referentes a filtragem
-            da consulta no ORM. Utiliza-se da seguinte forma: {field:value}.
-            - select_related: lista de strings com os campos a serem chamados
+            - query_params: Dicionário com os valores referentes a filtragem
+            da consulta no ORM.
+            - select_related: Lista de strings com os campos a serem chamados
             no select related da consulta.
         Returns:
-            - obj: Objeto Cliente.
+            - obj: Objeto.
         '''
-        return self.model.objects.select_related(*select_related).get(**query_params)
+        return self.model.objects.select_related(*select_related).prefetch_related(*prefetch_related).get(**query_params)
+    
+    def get_with_related(self, query_params={}, prefetch_related=[]):
+        '''
+        Retorna um único objeto com base nos parâmetros definidos e seus campos que referenciam
+        outros models, caso passe o prefetch_related:
+        Args:
+            - query_params: Dicionário com os valores referentes a filtragem
+            da consulta no ORM.
+            - prefetch_related: Lista de strings com os campos a serem chamados
+            no prefetch related da consulta.
+        Returns:
+            - obj: Objeto.
+        '''
+        return self.model.objects.prefetch_related(*prefetch_related).get(**query_params)
 
-    def list(self, query_params={}, order_by=[], select_related=[]):
+    def list(self):
         '''
         Realiza a listagem de dados.
-            Args:
-            - query_params: Dict com todos os valores, campo:valor,
-            para serem levados em consideração para filtragem da 
-            seleção.
-            - order_by: Lista contendo strings com os campos a serem
-            considerados para ordenação na listagem.
-            - select_related: lista de strings com os campos a serem chamados
-            no select related da consulta.
             Returns:
             - Lista de objetos.
         '''
-        return self.model.objects.select_related(*select_related).filter(**query_params).order_by(*order_by)
+        return self.model.objects.all()
+    
+    def update(self, obj, changed_data={}):
+        """
+        Realiza a alteração parcial dos campos de um objeto via ORM.
+        Args:
+        - obj: Objeto com as alterações.
+        - changed_data: Dicionário com o campo update_fields e o seu 
+        valor sendo uma lista indicando os campos alterados
+        Returns:
+        - obj: Objeto alterado.
+        """
+        return obj.save(**changed_data)
