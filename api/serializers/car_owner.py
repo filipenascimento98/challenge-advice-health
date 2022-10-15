@@ -1,5 +1,5 @@
 from rest_framework import serializers
 
 
-class CarOwnerInput(serializers.Serializer):
+class CarOwnerSerializer(serializers.Serializer):
     name = serializers.CharField()
