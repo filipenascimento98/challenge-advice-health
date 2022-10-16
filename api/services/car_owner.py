@@ -1,5 +1,8 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.authentication import TokenAuthentication
+
 from api.serializers.car_owner import (
     CarOwnerSerializer,
     CarOwnerOutputSerializer,
@@ -8,6 +11,9 @@ from api.domain.car_owner import CarOwnerDomain
 
 
 class CarOwnerService(APIView):
+
+    permission_classes = (IsAuthenticated,)
+    authentication_classes = (TokenAuthentication,)
 
     domain = CarOwnerDomain()
 

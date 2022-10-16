@@ -1,10 +1,17 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.authentication import TokenAuthentication
+
 from api.domain.car import CarDomain
 from api.serializers.car import CarSerializer, CarOutputSerializer
 
 
 class CarService(APIView):
+
+    permission_classes = (IsAuthenticated,)
+    authentication_classes = (TokenAuthentication,)
+
     domain = CarDomain()
 
     def post(self, request):
