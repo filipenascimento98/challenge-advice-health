@@ -35,4 +35,4 @@ class CarDomain(DomainBase):
             changed_data={"update_fields": ["sales_opportunity"]}
         )
         
-        return {"message": True, "status": 201}
+        return {"message": ret.pk, "status": 201}

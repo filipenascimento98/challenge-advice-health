@@ -7,6 +7,7 @@ class CarSerializer(serializers.Serializer):
     model = serializers.ChoiceField(choices=['Hatch', 'Sedan', 'Convertible'])
 
 class CarOutputSerializer(serializers.Serializer):
+    cd_car = serializers.UUIDField()
     owner = CarOwnerOutputSerializer()
     color = serializers.CharField()
     model = serializers.CharField()

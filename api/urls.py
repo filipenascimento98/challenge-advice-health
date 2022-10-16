@@ -11,10 +11,10 @@ app_name = "api"
 
 router = routers.DefaultRouter()
 router.register(r'user', UserService)
+router.register(r'car-owner', CarOwnerService, basename='CarOwnerModel')
+router.register(r'car', CarService, basename='CarModel')
 
 urlpatterns = [
-    path("car-owner/", CarOwnerService.as_view()),
-    path("car/", CarService.as_view()),
     path("login/", obtain_auth_token),
     path('', include(router.urls))
 ]

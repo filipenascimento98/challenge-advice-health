@@ -20,7 +20,7 @@ class RepositoryBase:
         '''
         obj.save()
     
-    def get(self, query_params={}, select_related=[], prefetch_related=[]):
+    def get(self, query_params={}, select_related=[]):
         '''
         Retorna um único objeto com base nos parâmetros definidos:
         Args:
@@ -31,7 +31,7 @@ class RepositoryBase:
         Returns:
             - obj: Objeto.
         '''
-        return self.model.objects.select_related(*select_related).prefetch_related(*prefetch_related).get(**query_params)
+        return self.model.objects.select_related(*select_related).get(**query_params)
     
     def get_with_related(self, query_params={}, prefetch_related=[]):
         '''
